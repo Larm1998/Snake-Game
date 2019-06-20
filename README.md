@@ -1,2 +1,2 @@
-# Larm1998/Snake-Game.github.io
+# Larm1998Snake-Game.github.io
 The classic Snake Game in HTML, JS and CSS
