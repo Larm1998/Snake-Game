@@ -41,33 +41,33 @@
                 {x: 110, y: 150},
             ]
 
-            // The user's score
+            // Los puntos obtenidos
             let score=0;
-            // When this is true the snake is changing direction
+            // Cuando el codigo cambie a "true" para cambiar la dirección
             let changingDirection=false;
-            // Food x Coordinate
+            // Coordenada X de la comida
             let foodX;
-            // Food y Coordinate
+            // Coordenada Y de la comida 
             let foodY;
-            //Horizontal velocity
+            // Velocidad en Horizontal
             let dx=10;
-            //Vertical velocity
+            // Velocidad en vertical
             let dy=0;
 
-            // Get the canvas element
+            // Obtener el elemento en el cuadro
             const gameCanvas= document.getElementById("gameCanvas");
-
-            // Return a two dimensional drawing context
+            
+            // Retorna en 2 dimensiones el dibujo 
             const ctx=gameCanvas.getContext("2d");
 
-            //Start game
+            // Empieza el juego
             main();
 
             createFood();
 
             document.addEventListener("keydown", changeDirection);
 
-            //main function called repeatedly to advance the game
+            // Funcion principal llamandose repetidamente
             function main() {
 
                 if(didGameEnd()) return;
@@ -78,7 +78,7 @@
                     drawFood();
                     advanceSnake();
                     drawSnake();
-                // Call main again
+                // Llamar al main de nuevo
                 main();
                 }, Game_SPEED)
             }
@@ -99,9 +99,9 @@
             }
 
             /*
-            * Advances the snake by changing the x-coordinates of its parts
-            * according to the horizontal velocity and the y-coordinates of its parts
-            * according to the vertical veolocity
+            * La serpiente avanza cambiando la Coordenada en X
+            * dependiendo de la velocidad horizontal y la the y-coodinates de sus partes
+            * de acuerdo a la velocidad Vertical
             */
             function advanceSnake(){
                 const head= {x: snake[0].x+dx,y:snake[0].y+dy};
@@ -110,21 +110,21 @@
 
                 const didEatFood=snake[0].x===foodX && snake[0].y===foodY;
                 if(didEatFood){
-                    //Increase the score
+                    // Incrementa el puntaje
                     score+=10;
-                    //show the score on the screen
+                    // Mostrar el puntaje en pantalla
                     document.getElementById('score').innerHTML=score;
 
-                    // New Food location
+                    // Nueva ubicacion de la comida
                     createFood();
                 }
                 else{
-                    //Remove the last part of snake body
+                    // Elimina la ultima parte del cuerpo de la serpiente
                     snake.pop();
                 }
             }
 
-            // Return true if the head of the snake touched another part of the field
+            // Devuelve true si la cabeza de la serpiente toca algun borde del cuadro
             function didGameEnd(){
                 for(let i=4; i<snake.length; i++){
                     if(snake[i].x===snake[0].x && snake[i].y===snake[0].y)return true
@@ -139,23 +139,22 @@
             }
 
             /**
-            * Generates a random number that is a multiple of 10 given a minumum
-            * and a maximum number
-            * @param { number } min - The minimum number the random number can be
-            * @param { number } max - The maximum number the random number can be
+            * Genera numeros al azar que sean multiplos de 10 dando el minimo
+            * y el numero maximo
             */
+            
            function randomTen(min, max){
                return Math.round((Math.random()*(max-min)+ min)/10)*10;
            }
 
-           //Create the food in random places of the canvas
+           // Crea la comida en lugares aleatorios dentro del cuadro
            function createFood(){
-               //Random number in x coordinate
+               // Numero al azar en la coordenada X
                foodX=randomTen(0, gameCanvas.width-10);
-               //Random number in y coordinate
+               // Numero al azar en la coordenada Y
                foodY=randomTen(0, gameCanvas.height-10);
 
-               // If the new food location is where the snake currently is, generate a new food location
+               // Si la ubicacion de la nueva comida generada esta donde la serpiente se encuentra actualmente, genera otra automaticamente
                snake.forEach(function isOnSnake(part){
                    const foodIsOnSnake=part.x==foodX && part.y==foodY;
                    if(foodIsOnSnake){
@@ -164,36 +163,36 @@
                });
            }
 
-           //Here we draw our snake in the canvas
+           // Aquí dibujamos la serpiente dentro del cuadro
            function drawSnake(){
-                // we loop through the snake parts drwaing each part on the canvas
+                // Aquí hacemos un loop con las partes de la serpiente para generarlas dentro del cuadro
                 snake.forEach(drawSnakePart)
             }
 
-            // Draws a part of the snake on the canvas
+            // Dibuja partes de la serpiente dentro del cuadro
 
             function drawSnakePart(snakePart){
-                // here set the colour of the snake part
+                // Ponemos el color de las partes de la serpiente
                 ctx.fillStyle=SNAKE_COLOUR;
 
-                // Set the border Colour of the snake part
+                // Color del borde de las partes del cuerpo
                 ctx.strokestyle=SNAKE_BORDER_COLOUR;
 
-                // Draw a illed rectangle to represent the snake part at the coordinates
+                // Dibuja un rectangulo que representa a la serpiente
                 ctx.fillRect(snakePart.x, snakePart.y, 10, 10);
 
-                // Draw a border around the snake part
+                // Dibuja el borde alrededor del cuerpo de la serpiente
                 ctx.strokeRect(snakePart.x, snakePart.y, 10, 10);
             }
 
-            // Change the directon of the snake with the keys
+            // Cambia la direccion de las serpiente con las teclas del teclado
             function changeDirection(event){
                 const LEFT_KEY=37;
                 const RIGHT_KEY=39;
                 const UP_KEY=38;
                 const DOWN_KEY=40;
 
-                // prevent snake from reversing
+                // previene que la serpiente vaya en direccion contraria
                 if(changingDirection) return;
                 changingDirection=true;
 
